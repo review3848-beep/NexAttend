@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>NexAttend | ระบบเช็คชื่ออัจฉริยะ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Theme -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", system-ui, sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 0% 0%, #312e81 0, transparent 45%),
+        radial-gradient(circle at 100% 0%, #0ea5e9 0, transparent 45%),
+        #020617;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: .5px;
+    }
+
+    .nav a {
+      margin-left: 1.2rem;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .nav a:hover {
+      color: var(--text-main);
+    }
+
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 3rem;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+    }
+
+    .actions a {
+      display: inline-block;
+      padding: .9rem 1.4rem;
+      border-radius: .8rem;
+      margin-right: .8rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      color: #fff;
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border-soft);
+      color: var(--text-main);
+    }
+
+    .panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-soft);
+      border-radius: 1.2rem;
+      padding: 1.8rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .role {
+      margin-bottom: 1.2rem;
+    }
+
+    .role h3 {
+      margin: 0 0 .3rem;
+      font-size: 1.05rem;
+    }
+
+    .role p {
+      margin: 0;
+      font-size: .9rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: .85rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="logo">NexAttend</div>
+    <div>
+      <a href="admin/login.html">Admin</a>
+      <a href="teacher/login.html">Teacher</a>
+      <a href="student/login.html">Student</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <h1>
+        ระบบเช็คชื่อ<br>
+        <span style="color:var(--accent-secondary)">ที่ออกแบบมาสำหรับสถาบันจริง</span>
+      </h1>
+      <p>
+        NexAttend คือระบบเช็คชื่ออัจฉริยะ  
+        สำหรับครูและนักเรียน ใช้งานง่าย ตรวจสอบได้ และขยายได้ในระดับองค์กร
+      </p>
+
+      <div class="actions">
+        <a href="student/login.html" class="btn-primary">นักเรียนเช็คชื่อ</a>
+        <a href="teacher/login.html" class="btn-outline">เข้าสู่ระบบครู</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="role">
+        <h3>👩‍🏫 สำหรับครู</h3>
+        <p>เปิดคาบ • สร้าง Token • ตรวจสอบการเข้าเรียน • Export รายงาน</p>
+      </div>
+      <div class="role">
+        <h3>🎓 สำหรับนักเรียน</h3>
+        <p>เช็คชื่อรวดเร็ว • ดูประวัติ • Dashboard ส่วนตัว</p>
+      </div>
+      <div class="role">
+        <h3>🛡️ สำหรับแอดมิน</h3>
+        <p>ควบคุมผู้ใช้ • ภาพรวมทั้งระบบ • ความปลอดภัย</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 NexAttend · Smart Attendance System
+  </footer>
+
+</body>
+</html>
