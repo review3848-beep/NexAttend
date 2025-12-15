@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ประวัติการเข้าเรียน</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../css/styles.css">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 10%, #312e81 0, transparent 45%),
+        radial-gradient(circle at 80% 0%, #0ea5e9 0, transparent 40%),
+        #020617;
+      font-family: "Inter", system-ui, sans-serif;
+      color: #e5e7eb;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(15,23,42,.92);
+      border-bottom: 1px solid rgba(148,163,184,.35);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: .9rem 1.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-title strong {
+      font-size: 1rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .header-title span {
+      font-size: .8rem;
+      color: #9ca3af;
+    }
+
+    .back {
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: .85rem;
+      font-weight: 600;
+    }
+
+    /* ===== LAYOUT ===== */
+    .wrap {
+      max-width: 1100px;
+      margin: 2rem auto 3rem;
+      padding: 0 1.4rem;
+    }
+
+    /* ===== FILTER ===== */
+    .filter {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: .8rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .filter input,
+    .filter select {
+      padding: .6rem .7rem;
+      border-radius: .6rem;
+      background: rgba(15,23,42,.95);
+      border: 1px solid rgba(148,163,184,.35);
+      color: #e5e7eb;
+      font-size: .85rem;
+    }
+
+    .filter button {
+      padding: .6rem 1rem;
+      border-radius: .6rem;
+      border: none;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(135deg,#4f46e5,#0ea5e9);
+    }
+
+    /* ===== TABLE ===== */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 .6rem;
+    }
+
+    thead th {
+      font-size: .75rem;
+      color: #9ca3af;
+      text-align: left;
+      padding: .4rem .6rem;
+    }
+
+    tbody tr {
+      background: rgba(15,23,42,.95);
+      border: 1px solid rgba(148,163,184,.35);
+    }
+
+    tbody td {
+      padding: .75rem .6rem;
+      font-size: .85rem;
+    }
+
+    tbody tr td:first-child {
+      border-radius: .8rem 0 0 .8rem;
+    }
+
+    tbody tr td:last-child {
+      border-radius: 0 .8rem .8rem 0;
+    }
+
+    /* ===== BADGE ===== */
+    .badge {
+      display: inline-block;
+      padding: .25rem .65rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .3px;
+    }
+
+    .ok {
+      background: rgba(34,197,94,.15);
+      color: #4ade80;
+      border: 1px solid rgba(34,197,94,.45);
+    }
+
+    .late {
+      background: rgba(234,179,8,.15);
+      color: #facc15;
+      border: 1px solid rgba(234,179,8,.45);
+    }
+
+    .absent {
+      background: rgba(239,68,68,.15);
+      color: #f87171;
+      border: 1px solid rgba(239,68,68,.45);
+    }
+
+    @media (max-width: 700px) {
+      .filter {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="header-title">
+        <strong>📘 ประวัติการเข้าเรียน</strong>
+        <span>แสดงข้อมูลการเข้าเรียนย้อนหลัง</span>
+      </div>
+      <a href="dashboard.html" class="back">← กลับหน้าสรุป</a>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="wrap">
+
+    <!-- FILTER -->
+    <div class="filter">
+      <input type="date">
+      <select>
+        <option value="">ทุกวิชา</option>
+        <option>คณิตศาสตร์</option>
+        <option>ภาษาไทย</option>
+        <option>คอมพิวเตอร์</option>
+      </select>
+      <button>ค้นหา</button>
+    </div>
+
+    <!-- TABLE -->
+    <table>
+      <thead>
+        <tr>
+          <th>วันที่</th>
+          <th>วิชา</th>
+          <th>ครูผู้สอน</th>
+          <th>สถานะ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10/12/2567</td>
+          <td>คอมพิวเตอร์</td>
+          <td>อ.สมหมาย</td>
+          <td><span class="badge ok">มาเรียน</span></td>
+        </tr>
+        <tr>
+          <td>09/12/2567</td>
+          <td>ภาษาไทย</td>
+          <td>อ.สุดา</td>
+          <td><span class="badge late">สาย</span></td>
+        </tr>
+        <tr>
+          <td>08/12/2567</td>
+          <td>คณิตศาสตร์</td>
+          <td>อ.วิชัย</td>
+          <td><span class="badge absent">ขาด</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </main>
+
+</body>
+</html>

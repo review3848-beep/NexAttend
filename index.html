@@ -2,178 +2,521 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <title>NexAttend | ระบบเช็คชื่ออัจฉริยะ</title>
+  <title>NexAttend | ระบบเช็คชื่อออนไลน์สำหรับครูและนักเรียน</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Theme -->
-  <link rel="stylesheet" href="css/styles.css">
-
-  <!-- Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- ใช้ไฟล์ CSS หลักของโปรเจกต์ -->
+  <link rel="stylesheet" href="css/styles.css" />
 
   <style>
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "Inter", system-ui, sans-serif;
-      color: var(--text-main);
       background:
-        radial-gradient(circle at 0% 0%, #312e81 0, transparent 45%),
-        radial-gradient(circle at 100% 0%, #0ea5e9 0, transparent 45%),
+        radial-gradient(circle at 0% 0%, #1d2337 0, transparent 55%),
+        radial-gradient(circle at 100% 0%, #312e81 0, transparent 55%),
         #020617;
+      color: #e5e7eb;
+      font-family: "Inter", system-ui, sans-serif;
     }
 
-    .nav {
+    /* ---------------- NAVBAR ---------------- */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 1.2rem 2rem;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(15,23,42,0.9);
+      border-bottom: 1px solid rgba(148,163,184,0.35);
+      backdrop-filter: blur(16px);
     }
 
-    .logo {
-      font-weight: 700;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: conic-gradient(from 210deg, #22c55e, #0ea5e9, #6366f1, #f97316, #22c55e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 18px rgba(59,130,246,.8);
       font-size: 1.2rem;
-      letter-spacing: .5px;
     }
 
-    .nav a {
-      margin-left: 1.2rem;
+    .brand-text-main {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(135deg,#e5e7eb,#a5b4fc);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .brand-text-sub {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .nav-link {
+      color: #9ca3af;
       text-decoration: none;
-      color: var(--text-muted);
-      font-weight: 500;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      transition: 0.18s;
+    }
+    .nav-link:hover {
+      color: #e5e7eb;
+      background: rgba(148,163,184,0.25);
     }
 
-    .nav a:hover {
-      color: var(--text-main);
-    }
-
-    .hero {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 4rem 2rem 3rem;
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 3rem;
-    }
-
-    .hero h1 {
-      font-size: 2.6rem;
-      line-height: 1.2;
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-      margin-bottom: 2rem;
-    }
-
-    .actions a {
-      display: inline-block;
-      padding: .9rem 1.4rem;
-      border-radius: .8rem;
-      margin-right: .8rem;
+    .admin-btn {
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(236,72,153,0.9);
+      background: rgba(236,72,153,0.18);
+      color: #f9fafb;
+      text-decoration: none;
+      font-size: 0.8rem;
       font-weight: 600;
-      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+    .admin-btn:hover {
+      background: linear-gradient(135deg,#ec4899,#f97316);
+      box-shadow: 0 10px 26px rgba(236,72,153,0.55);
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-      color: #fff;
+    /* ---------------- HERO ---------------- */
+    .hero {
+      max-width: 1120px;
+      margin: 2.4rem auto 2.2rem;
+      padding: 0 1.4rem;
+      display: grid;
+      grid-template-columns: minmax(0,1.4fr) minmax(0,1.1fr);
+      gap: 2rem;
+      align-items: center;
     }
 
-    .btn-outline {
-      border: 1px solid var(--border-soft);
-      color: var(--text-main);
+    .hero-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #a5b4fc;
+      margin-bottom: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
-    .panel {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-soft);
-      border-radius: 1.2rem;
-      padding: 1.8rem;
-      backdrop-filter: blur(10px);
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      line-height: 1.22;
+      font-weight: 700;
+      margin-bottom: 0.9rem;
+      color: #f9fafb;
     }
 
-    .role {
+    .hero-title span.highlight {
+      background: linear-gradient(135deg,#60a5fa,#c4b5fd,#f97316);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: #9ca3af;
+      margin-bottom: 1.8rem;
+      max-width: 32rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
       margin-bottom: 1.2rem;
     }
 
-    .role h3 {
-      margin: 0 0 .3rem;
-      font-size: 1.05rem;
+    .btn-lg-primary,
+    .btn-lg-outline {
+      border-radius: 999px;
+      padding: 0.8rem 1.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      text-decoration: none;
+      transition: 0.18s;
+      white-space: nowrap;
     }
 
-    .role p {
-      margin: 0;
-      font-size: .9rem;
-      color: var(--text-muted);
+    .btn-lg-primary {
+      background: linear-gradient(135deg,#4f46e5,#6366f1);
+      color: #f9fafb;
+      box-shadow: 0 14px 32px rgba(79,70,229,0.6);
+    }
+    .btn-lg-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(79,70,229,0.7);
     }
 
+    .btn-lg-outline {
+      border: 1px solid rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.7);
+      color: #e5e7eb;
+    }
+    .btn-lg-outline:hover {
+      background: rgba(148,163,184,0.18);
+    }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    /* ---------------- HERO RIGHT: DASHBOARD CARD ---------------- */
+    .hero-card {
+      border-radius: 1.4rem;
+      padding: 1.6rem 1.4rem 1.7rem;
+      background:
+        radial-gradient(circle at 0 0, rgba(96,165,250,0.4), transparent 60%),
+        rgba(15,23,42,0.98);
+      border: 1px solid rgba(148,163,184,0.4);
+      box-shadow: 0 22px 60px rgba(15,23,42,0.95);
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .hero-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .hero-card-tag {
+      font-size: 0.75rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(22,163,74,0.12);
+      color: #4ade80;
+      border: 1px solid rgba(34,197,94,0.55);
+    }
+
+    .hero-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 0.9rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-stat {
+      padding: 0.9rem 0.9rem;
+      border-radius: 0.9rem;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid rgba(148,163,184,0.45);
+    }
+
+    .hero-stat-label {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      margin-bottom: 0.18rem;
+    }
+    .hero-stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .hero-stat-foot {
+      font-size: 0.75rem;
+      color: #6ee7b7;
+      margin-top: 0.1rem;
+    }
+
+    .hero-card-footer {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      border-top: 1px dashed rgba(55,65,81,0.8);
+      padding-top: 0.7rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* ---------------- FEATURES SECTION ---------------- */
+    .section {
+      max-width: 1120px;
+      margin: 0 auto 3rem;
+      padding: 0 1.4rem;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-sub {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-bottom: 1.2rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .feature-card {
+      border-radius: 1rem;
+      padding: 1rem;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(148,163,184,0.4);
+    }
+
+    .feature-icon {
+      font-size: 1.3rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .feature-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .feature-text {
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    /* ---------------- FOOTER ---------------- */
     footer {
+      border-top: 1px solid rgba(30,64,175,0.7);
+      padding: 1rem 1.4rem 1.4rem;
+      font-size: 0.8rem;
+      color: #6b7280;
       text-align: center;
-      padding: 2rem;
-      color: var(--text-muted);
-      font-size: .85rem;
+      background: radial-gradient(circle at 50% 0%, rgba(49,46,129,0.8), #020617 65%);
     }
 
     @media (max-width: 900px) {
       .hero {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0,1fr);
+        margin-top: 2rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .top-nav {
+        padding-inline: 1rem;
+      }
+      /* ซ่อนเฉพาะลิงก์เมนู ให้ปุ่ม Admin ยังอยู่ */
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        padding-inline: 1rem;
+      }
+      .feature-grid {
+        grid-template-columns: minmax(0,1fr);
       }
     }
   </style>
 </head>
-<body>
 
-  <!-- NAV -->
-  <div class="nav">
-    <div class="logo">NexAttend</div>
-    <div>
-      <a href="admin/login.html">Admin</a>
-      <a href="teacher/login.html">Teacher</a>
-      <a href="student/login.html">Student</a>
+<body>
+  <!-- NAVBAR -->
+  <header class="top-nav">
+    <div class="brand">
+      <div class="brand-logo">✓</div>
+      <div>
+        <div class="brand-text-main">NexAttend</div>
+        <div class="brand-text-sub">SMART ATTENDANCE SYSTEM</div>
+      </div>
     </div>
-  </div>
+
+    <div class="nav-actions">
+      <div class="nav-links">
+        <a href="#features" class="nav-link">ฟีเจอร์</a>
+        <a href="#roles" class="nav-link">รูปแบบการใช้งาน</a>
+      </div>
+      <!-- ✅ ปุ่ม Admin -->
+      <a href="admin/login.html" class="admin-btn">ADMIN</a>
+    </div>
+  </header>
 
   <!-- HERO -->
-  <section class="hero">
-    <div>
-      <h1>
-        ระบบเช็คชื่อ<br>
-        <span style="color:var(--accent-secondary)">ที่ออกแบบมาสำหรับสถาบันจริง</span>
-      </h1>
-      <p>
-        NexAttend คือระบบเช็คชื่ออัจฉริยะ  
-        สำหรับครูและนักเรียน ใช้งานง่าย ตรวจสอบได้ และขยายได้ในระดับองค์กร
-      </p>
+  <main>
+    <section class="hero">
+      <!-- LEFT -->
+      <div>
+        <div class="hero-kicker">
+          ระบบเช็คชื่อออนไลน์เชื่อมต่อ Google Sheet
+        </div>
 
-      <div class="actions">
-        <a href="student/login.html" class="btn-primary">นักเรียนเช็คชื่อ</a>
-        <a href="teacher/login.html" class="btn-outline">เข้าสู่ระบบครู</a>
-      </div>
-    </div>
+        <h1 class="hero-title">
+          จัดการการเข้าเรียนแบบดิจิทัล
+          สำหรับครูและนักเรียนในวิทยาลัย
+        </h1>
 
-    <div class="panel">
-      <div class="role">
-        <h3>👩‍🏫 สำหรับครู</h3>
-        <p>เปิดคาบ • สร้าง Token • ตรวจสอบการเข้าเรียน • Export รายงาน</p>
+        <p class="hero-subtitle">
+          NexAttend ช่วยให้ครูเปิดคาบด้วยTOKENเดียว  
+          นักเรียนสามารถสแกน QR หรือกรอกTOKENเพื่อเช็คชื่อ  
+          ข้อมูลทั้งหมดถูกบันทึกลง Google Sheet พร้อมใช้งานทำรายงานจริง
+        </p>
+
+        <div class="hero-cta">
+          <a href="teacher/login.html" class="btn-lg-primary">
+            👩‍🏫 เข้าสู่ระบบครู
+          </a>
+          <a href="student/login.html" class="btn-lg-outline">
+            🧑‍🎓 เข้าสู่ระบบนักเรียน
+          </a>
+        </div>
+
+        <div class="hero-meta">
+          ✓ ไม่ต้องติดตั้งโปรแกรม &nbsp;•&nbsp; ✓ ใช้ได้ทั้งคอมและมือถือ
+        </div>
       </div>
-      <div class="role">
-        <h3>🎓 สำหรับนักเรียน</h3>
-        <p>เช็คชื่อรวดเร็ว • ดูประวัติ • Dashboard ส่วนตัว</p>
+
+      <!-- RIGHT: DASHBOARD PREVIEW -->
+      <aside class="hero-card" aria-label="ตัวอย่างแดชบอร์ด">
+        <div class="hero-card-header">
+          <div>
+            <div class="hero-card-title">Dashboard ตัวอย่าง</div>
+            <div style="font-size:.78rem;color:#9ca3af;">ข้อมูลจำลองเพื่อแสดงตัวอย่างหน้าจอ</div>
+          </div>
+          <span class="hero-card-tag">Realtime</span>
+        </div>
+
+        <div class="hero-card-grid">
+          <div class="hero-stat">
+            <div class="hero-stat-label">นักเรียนทั้งหมด</div>
+            <div class="hero-stat-value">240</div>
+            <div class="hero-stat-foot">ลงทะเบียนในระบบ</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-label">คาบที่เปิดวันนี้</div>
+            <div class="hero-stat-value">18</div>
+            <div class="hero-stat-foot">กำลังใช้งาน</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-label">เช็คชื่อแล้ว</div>
+            <div class="hero-stat-value">712</div>
+            <div class="hero-stat-foot">อัปเดตแบบเรียลไทม์</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-label">อัตราการมาเรียน</div>
+            <div class="hero-stat-value">92%</div>
+            <div class="hero-stat-foot">วันนี้ทั้งหมด</div>
+          </div>
+        </div>
+
+        <div class="hero-card-footer">
+          <span>ข้อมูลจากชีต SESSIONS &amp; ATTENDANCE</span>
+          <span style="font-size:.78rem;color:#a5b4fc;">เชื่อมต่อผ่าน Google Apps Script</span>
+        </div>
+      </aside>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="section">
+      <h2 class="section-title">ทำไมต้องใช้ NexAttend</h2>
+      <p class="section-sub">ออกแบบมาเพื่อนักเรียน เน้นใช้งานจริงในห้องเรียน</p>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">เก็บข้อมูลลง Google Sheet อัตโนมัติ</div>
+          <p class="feature-text">
+            ทุกคาบเรียนและทุกการเช็คชื่อถูกบันทึกลงชีต TEACHERS, STUDENTS,
+            SESSIONS และ ATTENDANCE พร้อมนำไปวิเคราะห์หรือทำรายงานต่อได้ทันที
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <div class="feature-title">ล็อกอินแยกสิทธิ์ ครู / นักเรียน</div>
+          <p class="feature-text">
+            ครูเปิดคาบและดูสรุปเฉพาะของตัวเอง นักเรียนเช็คชื่อด้วยรหัสนักเรียน
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">📱</div>
+          <div class="feature-title">ใช้งานได้ทุกอุปกรณ์</div>
+          <p class="feature-text">
+            รองรับทั้งคอมพิวเตอร์ โน้ตบุ๊ก และสมาร์ตโฟน
+            ใช้งานผ่านเบราว์เซอร์ ไม่ต้องติดตั้งแอปเพิ่ม
+          </p>
+        </article>
       </div>
-      <div class="role">
-        <h3>🛡️ สำหรับแอดมิน</h3>
-        <p>ควบคุมผู้ใช้ • ภาพรวมทั้งระบบ • ความปลอดภัย</p>
+    </section>
+
+    <!-- ROLES SHORT SUMMARY -->
+    <section id="roles" class="section">
+      <h2 class="section-title">รูปแบบการใช้งานตามบทบาท</h2>
+      <p class="section-sub">ออกแบบให้แต่ละหน้าแยกให้เหมาะกับการใช้งานแต่ละกลุ่มผู้ใช้</p>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-title">สำหรับครูผู้สอน</div>
+          <p class="feature-text">
+            • สมัครและล็อกอินด้วยอีเมล<br>
+            • เปิดคาบด้วยรหัสวิชา / ห้องเรียน<br>
+            • ระบบสุ่มTOKENและบันทึกข้อมูลให้อัตโนมัติ<br>
+          </p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-title">สำหรับนักเรียน</div>
+          <p class="feature-text">
+            • สมัครด้วยรหัสนักเรียนที่มีอยู่ในฐานข้อมูลเท่านั้น<br>
+            • เช็คชื่อด้วยการสแกน QR หรือกรอกTOKEN <br>
+            • ระบบกันการเช็คชื่อซ้ำให้โดยอัตโนมัติ<br>
+          </p>
+        </article>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <footer>
-    © 2025 NexAttend · Smart Attendance System
+    NexAttend · Smart Attendance System · Powered by Google Apps Script &amp; Google Sheets
   </footer>
 
 </body>
