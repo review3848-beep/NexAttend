@@ -1,5 +1,5 @@
 // student/register.js
-import { callApi } from "../js/api.js";
+import { callApi } from "../../js/api.js";
 
 /* ================= DOM ================= */
 const form = document.getElementById("registerForm");
@@ -85,14 +85,12 @@ form.addEventListener("submit", async (e) => {
     setLoading(false);
 
     if (!res || res.success !== true) {
-      // error จาก GAS
       errStudentId.textContent =
         res?.message || "ไม่สามารถสมัครได้";
       return;
     }
 
     /* ---------- success ---------- */
-    // ดึงชื่อจากชีตมาแสดง
     firstName.value = res.data.firstName || "";
     lastName.value  = res.data.lastName  || "";
 
