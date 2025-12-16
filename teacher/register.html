@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>สมัครครู | NexAttend</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body class="auth-bg">
+  <form id="registerForm" class="card">
+    <h1>สมัครครู</h1>
+
+    <input id="teacherId" placeholder="รหัสครู">
+    <div id="err-teacherId" class="error"></div>
+
+    <input id="name" placeholder="ชื่อ - นามสกุล">
+    <input id="email" placeholder="อีเมล">
+    <input id="password" type="password" placeholder="รหัสผ่าน">
+
+    <button id="submitBtn">สมัครสมาชิก</button>
+
+    <p class="link">
+      มีบัญชีแล้ว? <a href="login.html">เข้าสู่ระบบ</a>
+    </p>
+  </form>
+
+  <script type="module" src="register.js"></script>
+</body>
+</html>
