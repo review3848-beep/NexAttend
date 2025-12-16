@@ -15,6 +15,7 @@ const pw2Input  = document.getElementById("password2");
 const btn = document.getElementById("registerBtn");
 const msg = document.getElementById("msg");
 
+
 // ===============================
 // EVENT
 // ===============================
