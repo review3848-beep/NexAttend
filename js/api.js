@@ -4,7 +4,7 @@
 
 // 🔴 ใส่ URL Web App จาก Google Apps Script
 export const API_BASE =
-  "PUT_YOUR_GAS_WEB_APP_URL_HERE";
+  "https://script.google.com/macros/s/AKfycbxSbNmvARRy5-EEslzN2r2MHSq5r5vZrP3_Jg29B5oKSUTwg8Q-jweH9rKVNfrPiNhF3g/exec";
 
 /**
  * callApi(action, payload)

@@ -2,213 +2,180 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>สมัครนักเรียน</title>
+  <title>สมัครนักเรียน | NexAttend</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- style หลัก -->
   <link rel="stylesheet" href="../css/styles.css">
 
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       background:
-        radial-gradient(circle at 20% 10%, #312e81 0, transparent 45%),
-        radial-gradient(circle at 80% 0%, #0ea5e9 0, transparent 40%),
+        radial-gradient(circle at 20% 10%, #1e293b 0, transparent 55%),
+        radial-gradient(circle at 80% 0%, #0f766e 0, transparent 55%),
         #020617;
-      font-family: "Inter", system-ui, sans-serif;
-      color: #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.6rem;
+      font-family:"Inter",system-ui,sans-serif;
+      color:#e5e7eb;
     }
 
-    /* ===== Card ===== */
-    .card {
-      width: 100%;
-      max-width: 440px;
-      background:
-        linear-gradient(180deg, rgba(15,23,42,.92), rgba(2,6,23,.96));
-      border: 1px solid rgba(148,163,184,.35);
-      border-radius: 1.6rem;
-      padding: 2.4rem 2.2rem 2.5rem;
-      box-shadow:
-        0 40px 90px rgba(0,0,0,.65),
-        inset 0 1px 0 rgba(255,255,255,.08);
-      backdrop-filter: blur(18px);
-      text-align: center;
+    .card{
+      width:100%;
+      max-width:420px;
+      padding:2rem 1.8rem;
+      background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(2,6,23,.95));
+      border-radius:1.4rem;
+      border:1px solid rgba(148,163,184,.28);
+      box-shadow:0 30px 80px rgba(0,0,0,.55);
     }
 
-    /* ===== Header ===== */
-    .student-logo {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto .9rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg,#6366f1,#0ea5e9);
-      display: grid;
-      place-items: center;
-      font-size: 2rem;
-      box-shadow: 0 0 26px rgba(99,102,241,.75);
+    .logo{
+      width:56px;
+      height:56px;
+      margin:0 auto .6rem;
+      border-radius:50%;
+      background:linear-gradient(135deg,#38bdf8,#6366f1);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 0 18px rgba(56,189,248,.6);
+      font-size:1.4rem;
     }
 
-    .student-title {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: .25rem;
-      letter-spacing: .3px;
+    h1{
+      text-align:center;
+      margin:.6rem 0 .2rem;
+      font-size:1.4rem;
     }
 
-    .student-sub {
-      font-size: .9rem;
-      color: #9ca3af;
-      margin-bottom: 2rem;
+    .sub{
+      text-align:center;
+      font-size:.85rem;
+      color:#9ca3af;
+      margin-bottom:1.6rem;
     }
 
-    /* ===== Fields ===== */
-    .field {
-      margin-bottom: 1.2rem;
-      text-align: left;
+    label{
+      font-size:.78rem;
+      color:#cbd5f5;
+      display:block;
+      margin-bottom:.25rem;
     }
 
-    .field label {
-      font-size: .8rem;
-      color: #c7d2fe;
-      display: block;
-      margin-bottom: .4rem;
-      letter-spacing: .3px;
+    input{
+      width:100%;
+      padding:.75rem .85rem;
+      border-radius:.7rem;
+      border:1px solid rgba(148,163,184,.35);
+      background:rgba(15,23,42,.85);
+      color:#e5e7eb;
+      outline:none;
+      margin-bottom:.3rem;
     }
 
-    .field input {
-      width: 100%;
-      padding: .85rem .95rem;
-      border-radius: .85rem;
-      background: rgba(2,6,23,.95);
-      border: 1px solid rgba(148,163,184,.4);
-      color: #e5e7eb;
-      font-size: .92rem;
-      outline: none;
-      transition: .2s;
+    input:focus{
+      border-color:#38bdf8;
+      box-shadow:0 0 0 1px rgba(56,189,248,.45);
     }
 
-    .field input:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99,102,241,.35);
+    input[disabled]{
+      opacity:.7;
+      cursor:not-allowed;
     }
 
-    /* ===== Button ===== */
-    .btn-primary {
-      width: 100%;
-      margin-top: 1rem;
-      padding: .95rem;
-      border-radius: 999px;
-      border: none;
-      font-size: .95rem;
-      font-weight: 600;
-      cursor: pointer;
-      color: #fff;
-      background: linear-gradient(135deg,#4f46e5,#0ea5e9);
-      box-shadow:
-        0 16px 40px rgba(14,165,233,.45),
-        inset 0 1px 0 rgba(255,255,255,.25);
-      transition: .22s;
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:.6rem;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
+    .error{
+      min-height:1.1em;
+      font-size:.72rem;
+      color:#fca5a5;
+      margin-bottom:.5rem;
     }
 
-    .msg {
-      margin-top: 1rem;
-      font-size: .85rem;
-      min-height: 1.2em;
-      text-align: center;
-      color: #fbbf24;
+    button{
+      width:100%;
+      margin-top:.5rem;
+      padding:.8rem;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      font-size:.95rem;
+      background:linear-gradient(135deg,#6366f1,#38bdf8);
+      color:#fff;
+      box-shadow:0 14px 36px rgba(56,189,248,.45);
+      transition:.18s;
     }
 
-    .footer {
-      margin-top: 1.6rem;
-      font-size: .85rem;
-      color: #9ca3af;
-      text-align: center;
+    button.loading{
+      opacity:.7;
+      cursor:not-allowed;
     }
 
-    .footer a {
-      color: #93c5fd;
-      text-decoration: none;
-      font-weight: 500;
+    .footer{
+      text-align:center;
+      margin-top:1.2rem;
+      font-size:.75rem;
+      color:#9ca3af;
+    }
+
+    .footer a{
+      color:#a5b4fc;
+      text-decoration:none;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <div class="student-logo">🎓</div>
-    <div class="student-title">สมัครนักเรียน</div>
-    <div class="student-sub">สร้างบัญชีสำหรับเข้าใช้งานระบบ</div>
+  <form id="registerForm" class="card" novalidate>
+    <div class="logo">🎓</div>
+    <h1>สมัครนักเรียน</h1>
+    <div class="sub">ยืนยันตัวตนจากข้อมูลในระบบ</div>
 
-    <div class="field">
-      <label>รหัสนักเรียน</label>
-      <input id="studentId" placeholder="เช่น 6512345">
+    <!-- รหัสนักเรียน -->
+    <label for="studentId">รหัสนักเรียน</label>
+    <input id="studentId" type="text" placeholder="เช่น 6512345">
+    <div id="err-studentId" class="error"></div>
+
+    <!-- ชื่อ / นามสกุล (มาจากชีต) -->
+    <div class="row">
+      <div>
+        <label>ชื่อ</label>
+        <input id="firstName" type="text" disabled>
+      </div>
+      <div>
+        <label>นามสกุล</label>
+        <input id="lastName" type="text" disabled>
+      </div>
     </div>
 
-    <div class="field">
-      <label>ชื่อ - นามสกุล</label>
-      <input id="fullname" placeholder="เช่น สมชาย ใจดี">
-    </div>
+    <!-- รหัสผ่าน -->
+    <label for="password">รหัสผ่าน</label>
+    <input id="password" type="password" placeholder="ตั้งรหัสผ่าน">
+    <div id="err-password" class="error"></div>
 
-    <div class="field">
-      <label>รหัสผ่าน</label>
-      <input id="password" type="password" placeholder="ตั้งรหัสผ่าน">
-    </div>
+    <label for="confirm">ยืนยันรหัสผ่าน</label>
+    <input id="confirm" type="password" placeholder="กรอกรหัสผ่านอีกครั้ง">
+    <div id="err-confirm" class="error"></div>
 
-    <div class="field">
-      <label>ยืนยันรหัสผ่าน</label>
-      <input id="password2" type="password" placeholder="กรอกรหัสผ่านอีกครั้ง">
-    </div>
-
-    <button class="btn-primary" onclick="register()">สมัครใช้งาน</button>
-
-    <div id="msg" class="msg"></div>
+    <button id="submitBtn" type="submit">สมัครสมาชิก</button>
 
     <div class="footer">
-      มีบัญชีแล้ว? <a href="login.html">เข้าสู่ระบบ</a>
+      มีบัญชีแล้ว?
+      <a href="login.html">เข้าสู่ระบบ</a>
     </div>
-  </div>
+  </form>
 
-  <script>
-    function register() {
-      const id = studentId.value.trim();
-      const name = fullname.value.trim();
-      const pw1 = password.value;
-      const pw2 = password2.value;
-      const msg = document.getElementById("msg");
-
-      if (!id || !name || !pw1 || !pw2) {
-        msg.textContent = "กรุณากรอกข้อมูลให้ครบ";
-        return;
-      }
-
-      if (pw1 !== pw2) {
-        msg.textContent = "รหัสผ่านไม่ตรงกัน";
-        return;
-      }
-
-      msg.textContent = "กำลังสมัครสมาชิก...";
-      // 🔗 ต่อ Google Apps Script ในขั้นถัดไป
-    }
-  </script>
-<input id="studentId" type="text" placeholder="รหัสนักเรียน">
-<input id="fullName" type="text" placeholder="ชื่อ-นามสกุล">
-
-<input id="password" type="password" placeholder="รหัสผ่าน">
-<input id="password2" type="password" placeholder="ยืนยันรหัสผ่าน">
-
-<button id="registerBtn">สมัครสมาชิก</button>
-<p id="msg"></p>
-
-<script type="module" src="register.js"></script>
-
+  <!-- JS สมัคร -->
+  <script type="module" src="register.js"></script>
 </body>
 </html>

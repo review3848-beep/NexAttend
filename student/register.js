@@ -1,91 +1,110 @@
-// =====================================
-// NexAttend — Student Register
-// =====================================
-
+// student/register.js
 import { callApi } from "../js/api.js";
 
-// ===============================
-// DOM
-// ===============================
-const idInput   = document.getElementById("studentId");
-const nameInput = document.getElementById("fullName");
-const pwInput   = document.getElementById("password");
-const pw2Input  = document.getElementById("password2");
+/* ================= DOM ================= */
+const form = document.getElementById("registerForm");
+const btn  = document.getElementById("submitBtn");
 
-const btn = document.getElementById("registerBtn");
-const msg = document.getElementById("msg");
+const studentId = document.getElementById("studentId");
+const firstName = document.getElementById("firstName");
+const lastName  = document.getElementById("lastName");
+const password  = document.getElementById("password");
+const confirmPw = document.getElementById("confirm");
 
+const errStudentId = document.getElementById("err-studentId");
+const errPassword  = document.getElementById("err-password");
+const errConfirm   = document.getElementById("err-confirm");
 
-// ===============================
-// EVENT
-// ===============================
-btn.addEventListener("click", register);
-pw2Input.addEventListener("keydown", e => {
-  if (e.key === "Enter") register();
+/* ================= helpers ================= */
+function clearErrors() {
+  errStudentId.textContent = "";
+  errPassword.textContent  = "";
+  errConfirm.textContent   = "";
+}
+
+function setLoading(on) {
+  if (on) {
+    btn.disabled = true;
+    btn.classList.add("loading");
+    btn.textContent = "กำลังสมัคร...";
+  } else {
+    btn.disabled = false;
+    btn.classList.remove("loading");
+    btn.textContent = "สมัครสมาชิก";
+  }
+}
+
+/* ================= UX ================= */
+window.addEventListener("load", () => {
+  studentId.focus();
 });
 
-// ===============================
-// MAIN
-// ===============================
-async function register() {
-  const studentId = idInput.value.trim();
-  const fullName  = nameInput.value.trim();
-  const password  = pwInput.value.trim();
-  const password2 = pw2Input.value.trim();
+/* ================= submit ================= */
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  clearErrors();
 
-  msg.textContent = "";
+  const sid = studentId.value.trim();
+  const pw  = password.value;
+  const cf  = confirmPw.value;
 
-  // ---------- validation ----------
-  if (!studentId || !fullName || !password || !password2) {
-    showMsg("กรุณากรอกข้อมูลให้ครบ");
+  /* ---------- validation ---------- */
+  if (!sid) {
+    errStudentId.textContent = "กรุณากรอกรหัสนักเรียน";
+    studentId.focus();
     return;
   }
 
-  if (password.length < 6) {
-    showMsg("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร");
+  if (!/^\d{5,}$/.test(sid)) {
+    errStudentId.textContent = "รูปแบบรหัสนักเรียนไม่ถูกต้อง";
+    studentId.focus();
     return;
   }
 
-  if (password !== password2) {
-    showMsg("รหัสผ่านไม่ตรงกัน");
+  if (pw.length < 4) {
+    errPassword.textContent = "รหัสผ่านอย่างน้อย 4 ตัวอักษร";
+    password.focus();
     return;
   }
 
-  btn.disabled = true;
-  btn.textContent = "กำลังสมัครสมาชิก...";
+  if (pw !== cf) {
+    errConfirm.textContent = "รหัสผ่านไม่ตรงกัน";
+    confirmPw.focus();
+    return;
+  }
+
+  /* ---------- submit ---------- */
+  setLoading(true);
 
   try {
     const res = await callApi("studentRegister", {
-      studentId,
-      fullName,
-      password
+      studentId: sid,
+      password: pw
     });
 
-    if (res.success) {
-      showMsg("สมัครสมาชิกสำเร็จ กำลังไปหน้าเข้าสู่ระบบ...", true);
+    setLoading(false);
 
-      // redirect ไปหน้า login
-      setTimeout(() => {
-        location.href = "login.html";
-      }, 1500);
-
-    } else {
-      showMsg(res.message || "ไม่สามารถสมัครสมาชิกได้");
+    if (!res || res.success !== true) {
+      // error จาก GAS
+      errStudentId.textContent =
+        res?.message || "ไม่สามารถสมัครได้";
+      return;
     }
+
+    /* ---------- success ---------- */
+    // ดึงชื่อจากชีตมาแสดง
+    firstName.value = res.data.firstName || "";
+    lastName.value  = res.data.lastName  || "";
+
+    alert(
+      `สมัครสำเร็จ 🎉\nยินดีต้อนรับ ${res.data.firstName} ${res.data.lastName}`
+    );
+
+    window.location.href = "login.html";
 
   } catch (err) {
     console.error(err);
-    showMsg("ระบบขัดข้อง กรุณาลองใหม่");
+    setLoading(false);
+    alert("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้");
   }
-
-  btn.disabled = false;
-  btn.textContent = "สมัครสมาชิก";
-}
-
-// ===============================
-// HELPER
-// ===============================
-function showMsg(text, success = false) {
-  msg.textContent = text;
-  msg.style.color = success ? "#4ade80" : "#fca5a5";
-}
+});
