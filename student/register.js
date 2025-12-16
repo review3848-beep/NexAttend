@@ -1,7 +1,7 @@
 // student/register.js
 import { callApi } from "../js/api.js";
 
-/* ================= DOM ================= */
+/* ===== DOM ===== */
 const form = document.getElementById("registerForm");
 const btn  = document.getElementById("submitBtn");
 
@@ -15,7 +15,7 @@ const errStudentId = document.getElementById("err-studentId");
 const errPassword  = document.getElementById("err-password");
 const errConfirm   = document.getElementById("err-confirm");
 
-/* ================= helpers ================= */
+/* ===== helpers ===== */
 function clearErrors() {
   errStudentId.textContent = "";
   errPassword.textContent  = "";
@@ -23,23 +23,40 @@ function clearErrors() {
 }
 
 function setLoading(on) {
-  if (on) {
-    btn.disabled = true;
-    btn.classList.add("loading");
-    btn.textContent = "กำลังสมัคร...";
-  } else {
-    btn.disabled = false;
-    btn.classList.remove("loading");
-    btn.textContent = "สมัครสมาชิก";
-  }
+  btn.disabled = on;
+  btn.textContent = on ? "กำลังสมัคร..." : "สมัครสมาชิก";
 }
 
-/* ================= UX ================= */
+/* ===== auto focus ===== */
 window.addEventListener("load", () => {
   studentId.focus();
 });
 
-/* ================= submit ================= */
+/* ===== lookup student ===== */
+studentId.addEventListener("blur", async () => {
+  clearErrors();
+  const sid = studentId.value.trim();
+  if (!sid) return;
+
+  try {
+    const res = await callApi("studentLookup", { studentId: sid });
+
+    if (!res.success) {
+      errStudentId.textContent = res.message;
+      firstName.value = "";
+      lastName.value  = "";
+      return;
+    }
+
+    firstName.value = res.data.firstName;
+    lastName.value  = res.data.lastName;
+
+  } catch {
+    errStudentId.textContent = "ไม่สามารถตรวจสอบข้อมูลได้";
+  }
+});
+
+/* ===== submit ===== */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearErrors();
@@ -48,32 +65,26 @@ form.addEventListener("submit", async (e) => {
   const pw  = password.value;
   const cf  = confirmPw.value;
 
-  /* ---------- validation ---------- */
   if (!sid) {
     errStudentId.textContent = "กรุณากรอกรหัสนักเรียน";
-    studentId.focus();
     return;
   }
 
-  if (!/^\d{5,}$/.test(sid)) {
-    errStudentId.textContent = "รูปแบบรหัสนักเรียนไม่ถูกต้อง";
-    studentId.focus();
+  if (!firstName.value) {
+    errStudentId.textContent = "รหัสนักเรียนไม่อยู่ในระบบ";
     return;
   }
 
   if (pw.length < 4) {
     errPassword.textContent = "รหัสผ่านอย่างน้อย 4 ตัวอักษร";
-    password.focus();
     return;
   }
 
   if (pw !== cf) {
     errConfirm.textContent = "รหัสผ่านไม่ตรงกัน";
-    confirmPw.focus();
     return;
   }
 
-  /* ---------- submit ---------- */
   setLoading(true);
 
   try {
@@ -84,20 +95,12 @@ form.addEventListener("submit", async (e) => {
 
     setLoading(false);
 
-    if (!res || res.success !== true) {
-      errStudentId.textContent =
-        res?.message || "ไม่สามารถสมัครได้";
+    if (!res.success) {
+      errStudentId.textContent = res.message || "สมัครไม่สำเร็จ";
       return;
     }
 
-    /* ---------- success ---------- */
-    firstName.value = res.data.firstName || "";
-    lastName.value  = res.data.lastName  || "";
-
-    alert(
-      `สมัครสำเร็จ 🎉\nยินดีต้อนรับ ${res.data.firstName} ${res.data.lastName}`
-    );
-
+    alert(`สมัครสำเร็จ 🎉\nยินดีต้อนรับ ${firstName.value} ${lastName.value}`);
     window.location.href = "login.html";
 
   } catch (err) {
