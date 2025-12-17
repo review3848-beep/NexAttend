@@ -1,68 +1,44 @@
-// student/login.js
+// student/dashboard.js
 import { callApi } from "../js/api.js";
 
+/* ================= SESSION ================= */
+const student = JSON.parse(localStorage.getItem("student"));
+if (!student || !student.studentId) {
+  window.location.href = "login.html";
+}
+
 /* ================= DOM ================= */
-const idInput  = document.getElementById("studentId");
-const pwInput  = document.getElementById("password");
-const btn      = document.getElementById("loginBtn");
-const msg      = document.getElementById("msg");
+const nameEl   = document.getElementById("stuName");
+const idEl     = document.getElementById("stuId");
+const okEl     = document.getElementById("statOk");
+const lateEl   = document.getElementById("statLate");
+const absEl    = document.getElementById("statAbsent");
+const rateEl   = document.getElementById("statRate");
 
-/* ================= UX ================= */
-window.addEventListener("load", () => {
-  idInput.focus();
-});
+/* ================= INIT ================= */
+init();
 
-/* ================= ACTION ================= */
-btn.addEventListener("click", login);
-pwInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") login();
-});
-
-async function login() {
-  const studentId = idInput.value.trim();
-  const password  = pwInput.value.trim();
-
-  msg.textContent = "";
-
-  if (!studentId || !password) {
-    msg.textContent = "กรุณากรอกข้อมูลให้ครบ";
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = "กำลังเข้าสู่ระบบ...";
+async function init() {
+  nameEl.textContent = student.name || "-";
+  idEl.textContent   = student.studentId;
 
   try {
-    const res = await callApi("studentLogin", {
-      studentId,
-      password
+    const res = await callApi("studentDashboard", {
+      studentId: student.studentId
     });
 
-    btn.disabled = false;
-    btn.textContent = "เข้าสู่ระบบ";
-
     if (!res || res.success !== true) {
-      msg.textContent = res?.message || "ข้อมูลไม่ถูกต้อง";
+      alert("ไม่สามารถโหลดข้อมูลได้");
       return;
     }
 
-    // ✅ เก็บ session นักเรียน
-    localStorage.setItem(
-      "student",
-      JSON.stringify({
-        studentId: res.data.studentId,
-        name: res.data.name,
-        classRoom: res.data.classRoom
-      })
-    );
-
-    // ✅ ไปหน้า dashboard
-    window.location.href = "dashboard.html";
+    okEl.textContent   = res.ok;
+    lateEl.textContent = res.late;
+    absEl.textContent  = res.absent;
+    rateEl.textContent = res.rate + "%";
 
   } catch (err) {
     console.error(err);
-    btn.disabled = false;
-    btn.textContent = "เข้าสู่ระบบ";
-    msg.textContent = "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้";
+    alert("เกิดข้อผิดพลาดในการเชื่อมต่อระบบ");
   }
 }
