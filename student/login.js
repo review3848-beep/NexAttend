@@ -1,112 +1,68 @@
-// ===============================
-// Student Scan - NexAttend (REAL)
-// ===============================
-
+// student/login.js
 import { callApi } from "../js/api.js";
 
 /* ================= DOM ================= */
-const tokenInput = document.getElementById("token");
-const btn        = document.getElementById("btn");
-
-const popup      = document.getElementById("popup");
-const popIcon    = document.getElementById("popIcon");
-const popTitle   = document.getElementById("popTitle");
-const popText    = document.getElementById("popText");
-
-/* ================= SESSION CHECK ================= */
-const student = JSON.parse(localStorage.getItem("student"));
-if (!student || !student.studentId) {
-  window.location.href = "login.html";
-}
+const idInput  = document.getElementById("studentId");
+const pwInput  = document.getElementById("password");
+const btn      = document.getElementById("loginBtn");
+const msg      = document.getElementById("msg");
 
 /* ================= UX ================= */
-tokenInput.focus();
+window.addEventListener("load", () => {
+  idInput.focus();
+});
 
-/* ================= MAIN ACTION ================= */
-btn.addEventListener("click", checkin);
+/* ================= ACTION ================= */
+btn.addEventListener("click", login);
+pwInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") login();
+});
 
-async function checkin() {
-  const token = tokenInput.value.trim().toUpperCase();
+async function login() {
+  const studentId = idInput.value.trim();
+  const password  = pwInput.value.trim();
 
-  if (!token) {
-    showPopup("⚠️", "กรุณากรอก Token", "ต้องกรอก Token ก่อนเช็คชื่อ", "error", false);
+  msg.textContent = "";
+
+  if (!studentId || !password) {
+    msg.textContent = "กรุณากรอกข้อมูลให้ครบ";
     return;
   }
 
   btn.disabled = true;
-  btn.textContent = "กำลังเช็คชื่อ...";
+  btn.textContent = "กำลังเข้าสู่ระบบ...";
 
   try {
-    const res = await callApi("studentCheckin", {
-      studentId: student.studentId,
-      token
+    const res = await callApi("studentLogin", {
+      studentId,
+      password
     });
 
     btn.disabled = false;
-    btn.textContent = "เช็คชื่อ";
+    btn.textContent = "เข้าสู่ระบบ";
 
     if (!res || res.success !== true) {
-      showPopup(
-        "❌",
-        "เช็คชื่อไม่สำเร็จ",
-        res?.message || "คุณเช็คชื่อไปแล้ว หรือคาบเรียนปิดแล้ว",
-        "error",
-        false
-      );
+      msg.textContent = res?.message || "ข้อมูลไม่ถูกต้อง";
       return;
     }
 
-    // OK / LATE
-    if (res.status === "OK") {
-      showPopup(
-        "✅",
-        "เช็คชื่อสำเร็จ",
-        "บันทึกสถานะมาเรียนเรียบร้อย",
-        "ok",
-        true
-      );
-    } else if (res.status === "LATE") {
-      showPopup(
-        "⏰",
-        "เช็คชื่อสำเร็จ",
-        "คุณมาสาย ระบบบันทึกสถานะเรียบร้อย",
-        "late",
-        true
-      );
-    }
+    // ✅ เก็บ session นักเรียน
+    localStorage.setItem(
+      "student",
+      JSON.stringify({
+        studentId: res.data.studentId,
+        name: res.data.name,
+        classRoom: res.data.classRoom
+      })
+    );
+
+    // ✅ ไปหน้า dashboard
+    window.location.href = "dashboard.html";
 
   } catch (err) {
     console.error(err);
     btn.disabled = false;
-    btn.textContent = "เช็คชื่อ";
-    showPopup("❌", "ระบบขัดข้อง", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์", "error", false);
+    btn.textContent = "เข้าสู่ระบบ";
+    msg.textContent = "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้";
   }
 }
-
-/* ================= POPUP ================= */
-function showPopup(icon, title, text, type, redirect) {
-  popIcon.textContent  = icon;
-  popTitle.textContent = title;
-  popText.textContent  = text;
-
-  popIcon.className  = "icon " + type;
-  popTitle.className = type;
-
-  popup.style.display = "flex";
-
-  if (redirect) {
-    setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 1800);
-  } else {
-    setTimeout(() => {
-      popup.style.display = "none";
-      tokenInput.focus();
-    }, 2200);
-  }
-}
-
-/* ================= ENTER KEY ================= */
-tokenInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") checkin();
-});
