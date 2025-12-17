@@ -4,7 +4,7 @@
 
 // 🔴 ใส่ URL Web App จาก Google Apps Script
 export const API_BASE =
-  "https://script.google.com/macros/s/AKfycbxjIlnY1vWSfp8fybwZS0vJlDsS6j2v0ZMfajc3Hk6pO6499ReBz_5b2UvcAcWYyxeewg/exec";
+  "https://script.google.com/macros/s/AKfycbwWVNrn9aD2nKTbDKDLKwRoyG6RMwsZgcCnCpLlme0CNecXxBNozvQ0o07R4LHsJ7yfJg/exec";
 
 /**
  * callApi(action, payload)
