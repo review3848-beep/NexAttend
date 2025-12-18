@@ -1,44 +1,45 @@
-// student/dashboard.js
 import { callApi } from "../js/api.js";
 
-/* ================= SESSION ================= */
-const student = JSON.parse(localStorage.getItem("student"));
-if (!student || !student.studentId) {
-  window.location.href = "login.html";
-}
+const idEl  = document.getElementById("studentId");
+const pwEl  = document.getElementById("password");
+const msgEl = document.getElementById("msg");
 
-/* ================= DOM ================= */
-const nameEl   = document.getElementById("stuName");
-const idEl     = document.getElementById("stuId");
-const okEl     = document.getElementById("statOk");
-const lateEl   = document.getElementById("statLate");
-const absEl    = document.getElementById("statAbsent");
-const rateEl   = document.getElementById("statRate");
+window.login = async function () {
+  const studentId = idEl.value.trim();
+  const password  = pwEl.value.trim();
 
-/* ================= INIT ================= */
-init();
+  if (!studentId || !password) {
+    msgEl.textContent = "กรุณากรอกข้อมูลให้ครบ";
+    return;
+  }
 
-async function init() {
-  nameEl.textContent = student.name || "-";
-  idEl.textContent   = student.studentId;
+  msgEl.textContent = "กำลังเข้าสู่ระบบ...";
 
   try {
-    const res = await callApi("studentDashboard", {
-      studentId: student.studentId
+    const res = await callApi("studentLogin", {
+      studentId,
+      password
     });
 
     if (!res || res.success !== true) {
-      alert("ไม่สามารถโหลดข้อมูลได้");
+      msgEl.textContent = res?.message || "เข้าสู่ระบบไม่สำเร็จ";
       return;
     }
 
-    okEl.textContent   = res.ok;
-    lateEl.textContent = res.late;
-    absEl.textContent  = res.absent;
-    rateEl.textContent = res.rate + "%";
+    // ✅ เก็บ session ให้หน้าอื่นใช้
+    localStorage.setItem(
+      "student",
+      JSON.stringify({
+        studentId: res.data.studentId,
+        name: res.data.name
+      })
+    );
+
+    // ✅ ไป dashboard
+    window.location.href = "dashboard.html";
 
   } catch (err) {
     console.error(err);
-    alert("เกิดข้อผิดพลาดในการเชื่อมต่อระบบ");
+    msgEl.textContent = "ไม่สามารถเชื่อมต่อระบบได้";
   }
-}
+};
