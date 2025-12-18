@@ -1,19 +1,37 @@
+// student/login.js
 import { callApi } from "../js/api.js";
 
-const idEl  = document.getElementById("studentId");
-const pwEl  = document.getElementById("password");
-const msgEl = document.getElementById("msg");
+/* ================= DOM ================= */
+const idInput  = document.getElementById("studentId");
+const pwInput  = document.getElementById("password");
+const btn      = document.getElementById("loginBtn");
+const msgEl    = document.getElementById("msg");
 
-window.login = async function () {
-  const studentId = idEl.value.trim();
-  const password  = pwEl.value.trim();
+/* ================= UX ================= */
+idInput.focus();
 
+/* ================= EVENTS ================= */
+btn.addEventListener("click", login);
+pwInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") login();
+});
+
+/* ================= MAIN ================= */
+async function login() {
+  const studentId = idInput.value.trim();
+  const password  = pwInput.value.trim();
+
+  msgEl.textContent = "";
+
+  // ---------- validation ----------
   if (!studentId || !password) {
     msgEl.textContent = "กรุณากรอกข้อมูลให้ครบ";
     return;
   }
 
-  msgEl.textContent = "กำลังเข้าสู่ระบบ...";
+  // ---------- loading ----------
+  btn.disabled = true;
+  btn.textContent = "กำลังเข้าสู่ระบบ...";
 
   try {
     const res = await callApi("studentLogin", {
@@ -21,25 +39,32 @@ window.login = async function () {
       password
     });
 
+    // ---------- error from GAS ----------
     if (!res || res.success !== true) {
-      msgEl.textContent = res?.message || "เข้าสู่ระบบไม่สำเร็จ";
+      msgEl.textContent = res?.message || "ข้อมูลไม่ถูกต้อง";
+      btn.disabled = false;
+      btn.textContent = "เข้าสู่ระบบ";
       return;
     }
 
-    // ✅ เก็บ session ให้หน้าอื่นใช้
+    // ---------- SUCCESS ----------
+    // เก็บ session นักเรียน
     localStorage.setItem(
       "student",
       JSON.stringify({
         studentId: res.data.studentId,
-        name: res.data.name
+        name: res.data.name,
+        classRoom: res.data.classRoom
       })
     );
 
-    // ✅ ไป dashboard
+    // redirect
     window.location.href = "dashboard.html";
 
   } catch (err) {
     console.error(err);
     msgEl.textContent = "ไม่สามารถเชื่อมต่อระบบได้";
+    btn.disabled = false;
+    btn.textContent = "เข้าสู่ระบบ";
   }
-};
+}
