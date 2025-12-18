@@ -1,5 +1,5 @@
 export const API_BASE =
-  "https://script.google.com/macros/s/AKfycbwv3l2UIDdo7WHeYd9NonQz9fxQN4puZyY2RbrEi8cPPdtS12B0uo2Ay6_ivpg36CoNXw/exec";
+  "https://script.google.com/macros/s/AKfycbwRI_oHtLz2FRG43uHmUIl2lgRSdjcZ30ShfmhDOSS8mzMsnHRPBANFcpGcc0_aq8LihA/exec";
 
 export async function callApi(action, payload = {}) {
   const res = await fetch(API_BASE, {   // ✅ ใช้ให้ตรงชื่อ
