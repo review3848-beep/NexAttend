@@ -1,3 +1,4 @@
+// student/login.js
 import { callApi } from "../js/api.js";
 
 /* ================= DOM ================= */
@@ -6,8 +7,9 @@ const pwInput  = document.getElementById("password");
 const btn      = document.getElementById("loginBtn");
 const msgEl    = document.getElementById("msg");
 
-/* ================= EVENT ================= */
+/* ================= INIT ================= */
 btn.addEventListener("click", login);
+
 pwInput.addEventListener("keydown", e => {
   if (e.key === "Enter") login();
 });
@@ -33,23 +35,24 @@ async function login() {
       password
     });
 
+    btn.disabled = false;
+    btn.textContent = "เข้าสู่ระบบ";
+
     if (!res || res.success !== true) {
       msgEl.textContent = res?.message || "รหัสหรือรหัสผ่านไม่ถูกต้อง";
-      btn.disabled = false;
-      btn.textContent = "เข้าสู่ระบบ";
       return;
     }
 
     // ✅ เก็บ session
     localStorage.setItem("student", JSON.stringify(res.data));
 
-    // 👉 ไป dashboard
+    // ✅ ไป dashboard
     window.location.href = "dashboard.html";
 
   } catch (err) {
     console.error(err);
-    msgEl.textContent = "ไม่สามารถเชื่อมต่อระบบได้";
     btn.disabled = false;
     btn.textContent = "เข้าสู่ระบบ";
+    msgEl.textContent = "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้";
   }
 }
